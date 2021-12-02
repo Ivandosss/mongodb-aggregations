@@ -1,0 +1,27 @@
+db.air_alliances.aggregate([
+  {
+    $lookup: {
+      from: "air_routes",
+      localField: "airlines",
+      foreignField: "airline.name",
+      as: "allience.voo",
+    },
+  },
+  {
+    $unwind: "$allience.voo",
+  },
+  {
+    $match: { $or: [
+      { "allience.voo.airplane": "747" },
+      { "allience.voo.airplane": "380" },
+    ] },
+  },
+  {
+    $group: {
+      _id: "$name",
+      totalsRouts: { $sum: 1 },
+    },
+  },
+  { $sort: { totalsRouts: -1 } },
+  { $limit: 1 },
+]);
