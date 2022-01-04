@@ -1,3 +1,5 @@
+const milisegundoEmHora = 3600000;
+
 db.trips.aggregate([
   {
     $group: {
@@ -11,9 +13,7 @@ db.trips.aggregate([
   {
     $project: {
       tipo: "$_id",
-      duracaoMedia: {
-        $divide: [{ $divide: ["$diferença de horas somadas", "$count"] }, milesegundos],
-      },
+      duracaoMedia: { $divide: [{ $divide: ["$diferença de horas somadas", "$count"] }, milisegundoEmHora] },
     },
   },
   {
@@ -23,7 +23,5 @@ db.trips.aggregate([
       tipo: 1,
     },
   },
-  {
-    $sort: { tipo: -1 },
-  },
+  { $sort: { tipo: -1 } },
 ]);
