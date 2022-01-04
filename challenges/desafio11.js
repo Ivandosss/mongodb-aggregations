@@ -8,7 +8,7 @@ db.trips.aggregate([
     $sort: { count: -1 },
   },
   {
-    limit: 1,
+    $limit: 1,
   },
   {
     $project: {
