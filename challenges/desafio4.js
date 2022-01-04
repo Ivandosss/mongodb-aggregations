@@ -18,7 +18,8 @@ db.movies.aggregate([
     },
   },
   {
-    $sort: { title: 1 } },
+    $sort: { title: 1 },
+  },
   {
     $project:
     {
