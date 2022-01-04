@@ -1,20 +1,17 @@
 db.trips.aggregate([
   {
-    $match: { $and: [{ birthYear: { $ne: null } },
-      { birthYear: { $ne: " " } }] },
+    $match: {
+      birthYear: { $not: { $eq: "" }, $exists: true },
+    },
   },
   {
     $group: {
       _id: null,
       maiorAnoNascimento: { $max: { $toInt: "$birthYear" } },
-      menorAnoNascimento: { $min: "$birthYear" },
+      menorAnoNascimento: { $min: { $toInt: "$birthYear" } },
     },
   },
   {
-    $project: {
-      menorAnoNascimento: { $toInt: "$menorAnoNascimento" },
-      _id: 0,
-      maiorAnoNascimento: 1,
-    },
+    $project: { _id: 0 },
   },
 ]);
